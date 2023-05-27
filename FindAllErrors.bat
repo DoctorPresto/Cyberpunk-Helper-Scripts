@@ -67,20 +67,31 @@ echo Version: !version!  CET Version: !version_dll! > "%output_file%"
 
 :: Search for red4ext framework mod DLL files and check their versions
 set "dll_files=RED4ext.dll ArchiveXL.dll TweakXL.dll Codeware.dll"
+set "dll_not_found="
 
 for %%D in (%dll_files%) do (
-    set "found=0"
-    for /R "%CYBERPUNKDIR%\red4ext" %%F in (*%%D) do (
-        echo Searching in: %%~dpF
-        set "found=1"
-        for /f "delims=" %%a in ('powershell -Command "$versionInfo = [System.Diagnostics.FileVersionInfo]::GetVersionInfo('%%F'); $versionInfo.FileVersion"') do (
+    set "dll_version="
+    set "dll_found="
+    for /R "%CYBERPUNKDIR%\red4ext" %%F in ("*%%D") do (
+        for /f "delims=" %%a in ('powershell -Command "$versionInfo = Get-Command '%%F' | ForEach-Object { $_.FileVersionInfo.ProductVersion }; if ($versionInfo) { Write-Output $versionInfo }"') do (
             set "dll_version=%%a"
+            set "dll_found=1"
         )
-        echo %%~dpnxF - !dll_version! >> "!output_file!"
     )
-    if !found! equ 0 (
-        echo %%D not found >> "!output_file!"
+    if not defined dll_found (
+        if defined dll_not_found (
+            set "dll_not_found=!dll_not_found!, %%D"
+        ) else (
+            set "dll_not_found=%%D"
+        )
+    ) else (
+        echo %%D Version: !dll_version! >> "%output_file%"
     )
+)
+
+:: if any core mod dlls are not found, display an alert and write to the output file
+if defined dll_not_found (
+    echo The following core mods are not installed: %dll_not_found% >> "%output_file%"
 )
 
 :: Parse through all files ending with .log, excluding those with .number.log pattern
