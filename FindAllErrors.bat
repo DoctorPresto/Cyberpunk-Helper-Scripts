@@ -80,7 +80,7 @@ if exist "%cet_log%" (
         set "cet_version_line=%%a"
     )
     :: Trim the version from the line
-    for /f "tokens=9 delims= " %%a in ("!cet_version_line!") do (
+    for /f "tokens=12 delims= " %%a in ("!cet_version_line!") do (
         set "cet_version=%%~a"
         set "cet_found=1"
     )
