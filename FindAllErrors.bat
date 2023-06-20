@@ -57,7 +57,7 @@ for /f "tokens=2 delims==" %%a in ('wmic datafile where name^="!exe_path:\=\\!" 
 )      
 
 :: if not the current game version, yell at the user and deploy R.A.B.I.D.S.
-if not "!version!"=="3.0.72.45053" (
+if not "!version!"=="3.0.71.13361" (
   echo Please update the game before proceeding
   echo Deploying Roving Autonomous Bartmoss Interface Drones....
   FOR /L %%S IN (10, -1, 1) DO (
@@ -132,7 +132,7 @@ if defined cet_found (
 :: Parse through all files ending with .log, excluding those with .number.log pattern
 echo. >> "%output_file%" 
 echo ======================================================== >> "%output_file%"
-echo Succesfully Breached: %cyberpunkdir% >> "%output_file%"
+echo Successfully Breached: %cyberpunkdir% >> "%output_file%"
 echo The following log files have errors: >> "%output_file%"
 echo ======================================================== >> "%output_file%"
 
@@ -153,7 +153,9 @@ for /R "%CYBERPUNKDIR%" %%F in (*.log) do (
         set "has_error=false"
         
         :: Check for any errors in the file. If found, set error flag to true
-        findstr /I "exception error failed" "%%F" >nul && set "has_error=true"
+        for /F "delims=" %%L in ('findstr /I "exception error failed" "%%F" ^| findstr /V /I /C:"Failed to create record" ^| findstr /V /I /C:"reason: Record already exists"') do (
+            set "has_error=true"
+        )
         
         :: If error is found, print filepath and process the error lines
         if "!has_error!"=="true" (
@@ -163,7 +165,7 @@ for /R "%CYBERPUNKDIR%" %%F in (*.log) do (
             echo !relative_path:~1!%%~nxF >> "%output_file%"
             echo. >> "%output_file%"
 
-           for /F "delims=" %%L in ('findstr /I "exception error failed" "%%F"') do (
+            for /F "delims=" %%L in ('findstr /I "exception error failed" "%%F" ^| findstr /V /I /C:"Failed to create record" ^| findstr /V /I /C:"reason: Record already exists"') do (
                 echo     %%L >> "%output_file%"
                 echo Daemons uploaded successfully, data found
             )
