@@ -176,5 +176,6 @@ for /R "%CYBERPUNKDIR%" %%F in (*.log) do (
 
 :: Open the LOGS folder in a new File Explorer window for easy navigation and uploading to Discord
 start "" "%CYBERPUNKDIR%\_LOGS"
+start "" "%CYBERPUNKDIR%\_LOGS\FilteredLogs.txt"
 
 endlocal
