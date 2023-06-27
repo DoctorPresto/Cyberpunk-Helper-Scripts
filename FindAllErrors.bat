@@ -57,7 +57,7 @@ for /f "tokens=2 delims==" %%a in ('wmic datafile where name^="!exe_path:\=\\!" 
 )      
 
 :: if not the current game version, yell at the user and deploy R.A.B.I.D.S.
-if not "!version!"=="3.0.72.45053" (
+if not "!version!"=="3.0.72.54038" (
   echo Please update the game before proceeding
   echo Deploying Roving Autonomous Bartmoss Interface Drones....
   FOR /L %%S IN (10, -1, 1) DO (
