@@ -1,7 +1,12 @@
 @echo off
 setlocal enabledelayedexpansion
 
-echo Establishing connection.....
+set /p "=Establishing connection" <nul
+for /L %%i in (1,1,60) do (
+    set /p "=." <nul
+    ping localhost -n 1 >nul
+)
+echo.
 
 :: Check if we are in the cyberpunk directory or if the cyberpunk directory was dragged onto the script. Mostly stolen from Mana
 if "%~1" == "" (
@@ -39,7 +44,48 @@ if not exist "%CYBERPUNKDIR%\bin\x64\Cyberpunk2077.exe" (
   )
   goto :eof
 )
-echo Deploying Datamine
+
+echo.
+echo Please select an option:
+echo.
+echo 1. Delete all log files and launch the game (wait for your game to crash and then run option 2)
+echo.
+echo 2. Check for errors
+echo.
+
+set /p userOption=Enter your choice: 
+if "%userOption%"=="1" (
+	echo.
+    echo Deleting all log files...
+    for /R "%~dp0" %%G in (*.log) do (
+        del /F /Q "%%G"
+    )
+	echo.
+    echo All log files deleted successfully.
+    echo Starting Cyberpunk 2077...
+    start "" "%CYBERPUNKDIR%\bin\x64\Cyberpunk2077.exe"
+    goto :eof
+) else if "%userOption%"=="2" (
+    echo Deploying Datamine
+) else (
+    echo Invalid option, please enter 1 or 2.
+    goto START
+)
+
+::if not, deploy R.A.B.I.D.S and shut down
+if not exist "%CYBERPUNKDIR%\bin\x64\Cyberpunk2077.exe" (
+  echo.
+  echo Wake the f*ck up Samurai! This isn't your Cyberpunk install directory
+  echo Either place me in your Cyberpunk 2077 folder and try again
+  echo or drag and drop it onto me from Windows Explorer
+  echo.
+  echo Deploying Roving Autonomous Bartmoss Interface Drones....
+  FOR /L %%S IN (10, -1, 1) DO (
+    set /p =%%S ...!carret!<nul
+    ping -n 2 127.0.0.1 > nul 2>&1
+  )
+  goto :eof
+)
 :: Check if the LOGS folder already exists in the install directory, if not, create it
 if not exist "%CYBERPUNKDIR%\_LOGS" mkdir "%CYBERPUNKDIR%\_LOGS"
 
