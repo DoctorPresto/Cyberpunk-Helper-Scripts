@@ -199,7 +199,7 @@ for /R "%CYBERPUNKDIR%" %%F in (*.log) do (
         set "has_error=false"
         
         :: Check for any errors in the file. If found, set error flag to true
-        for /F "delims=" %%L in ('findstr /I "exception error failed" "%%F" ^| findstr /V /I /C:"Failed to create record" ^| findstr /V /I /C:"reason: Record already exists"') do (
+        for /F "delims=" %%L in ('findstr /I "exception error failed" "%%F" ^| findstr /V /I /C:"Failed to create record" ^| findstr /V /I /C:"reason: Record already exists" ^| findstr /V /I /C:"[Info]"') do (
             set "has_error=true"
         )
         
@@ -211,7 +211,7 @@ for /R "%CYBERPUNKDIR%" %%F in (*.log) do (
             echo !relative_path:~1!%%~nxF >> "%output_file%"
             echo. >> "%output_file%"
 
-            for /F "delims=" %%L in ('findstr /I "exception error failed" "%%F" ^| findstr /V /I /C:"Failed to create record" ^| findstr /V /I /C:"reason: Record already exists"') do (
+            for /F "delims=" %%L in ('findstr /I "exception error failed" "%%F" ^| findstr /V /I /C:"Failed to create record" ^| findstr /V /I /C:"reason: Record already exists" ^| findstr /V /I /C:"[Info]"') do (
                 echo     %%L >> "%output_file%"
                 echo Daemons uploaded successfully, data found
             )
