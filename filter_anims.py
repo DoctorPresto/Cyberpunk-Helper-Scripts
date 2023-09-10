@@ -7,8 +7,8 @@ import json
 # you need to edit this so that it points to the json you want to filter, paths need two slashes \\ not \
 file_to_search = "path\\to\\your\\anims.json"
 
-## set this to true if you have imported the anims file to blender and also want it to delete all the extra nla strips
-delete_anims = True 
+## set this to True if you have imported the anims file to blender and also want it to delete all the extra nla strips
+delete_anims = False 
 
 # List of anims to search for, seperated by a comma, individual lines is optional but easier to read
 names_to_search = [
