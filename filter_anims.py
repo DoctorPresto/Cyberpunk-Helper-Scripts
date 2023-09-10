@@ -26,7 +26,7 @@ dir_path, file_name = os.path.split(file_to_search)
 # lelts get the name of the anims.json
 file_name_without_extension, file_extension = os.path.splitext(file_name)
 
-#  set the new filename to match the original but with _filtered in front 
+#  set the new filename to match the original but with filtered_ in front 
 new_file_name = "filtered_" + file_name_without_extension + file_extension
 
 # tell the script to make the new file in the directory of the original 
