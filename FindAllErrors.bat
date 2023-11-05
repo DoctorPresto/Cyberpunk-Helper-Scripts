@@ -63,7 +63,7 @@ if "%userOption%"=="1" (
 	echo.
     echo All log files deleted successfully.
     echo Starting Cyberpunk 2077...
-    start "" "%CYBERPUNKDIR%\bin\x64\Cyberpunk2077.exe"
+    start "" "%CYBERPUNKDIR%\bin\x64\Cyberpunk2077.exe" -modded
     goto :eof
 ) else if "%userOption%"=="2" (
     echo Deploying Datamine
@@ -103,7 +103,7 @@ for /f "tokens=2 delims==" %%a in ('wmic datafile where name^="!exe_path:\=\\!" 
 )      
 
 :: if not the current game version, yell at the user and deploy R.A.B.I.D.S.
-if not "!version!"=="3.0.72.54038" (
+if not "!version!"=="3.0.75.25522" (
   echo Please update the game before proceeding
   echo Deploying Roving Autonomous Bartmoss Interface Drones....
   FOR /L %%S IN (10, -1, 1) DO (
@@ -166,7 +166,7 @@ for %%D in (%dll_files%) do (
 
 :: if any core mod dlls or CET are not found, display an alert and write to the output file
 if defined dll_not_found (
-    echo The following framework mods are not installed: %dll_not_found% >> "%output_file%"
+    echo The following framework mods are not detected: %dll_not_found% >> "%output_file%"
 )
 
 :: Print CET version if it was found
