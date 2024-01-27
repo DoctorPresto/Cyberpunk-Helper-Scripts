@@ -186,19 +186,14 @@ for /R "%CYBERPUNKDIR%" %%F in (*.log *log.txt) do (
     set "filename=%%~nxF"
     setlocal enabledelayedexpansion
     set "exclude=false"
-    if "!filename:~-6!" equ "1.log" set "exclude=true"
-    if "!filename:~-6!" equ "2.log" set "exclude=true"
-    if "!filename:~-6!" equ "3.log" set "exclude=true"
-    if "!filename:~-6!" equ "4.log" set "exclude=true"
-    if "!filename:~-6!" equ "5.log" set "exclude=true"
-    if "!filename:~-6!" equ "6.log" set "exclude=true"
-    if "!filename:~-6!" equ "7.log" set "exclude=true"
-    if "!filename:~-6!" equ "8.log" set "exclude=true"
-    if "!filename:~-6!" equ "9.log" set "exclude=true"
-    if "!filename:~-6!" equ "0.log" set "exclude=true"
-
-    REM Check if the file name contains two dots
+    
+    REM Check if the file name contains two dots or matches the date pattern
     echo "!filename!" | findstr /R /C:".*\..*\.." >nul
+    if !errorlevel! equ 0 (
+        set "exclude=true"
+    ) else (
+        echo "!filename!" | findstr /r /c:".*20[0-9][0-9]-[0-1][0-9]-[0-3][0-9].*" >nul
+    )
     if !errorlevel! equ 0 (
         set "exclude=true"
     )
