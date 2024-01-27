@@ -57,7 +57,7 @@ set /p userOption=Enter your choice:
 if "%userOption%"=="1" (
 	echo.
     echo Deleting all log files...
-    for /R "%~dp0" %%G in (*.log) do (
+    for /R "%~dp0" %%G in (*.log *log.txt) do (
         del /F /Q "%%G"
     )
 	echo.
@@ -182,10 +182,20 @@ echo Successfully Breached: %cyberpunkdir% >> "%output_file%"
 echo The following log files have errors: >> "%output_file%"
 echo ======================================================== >> "%output_file%"
 
-for /R "%CYBERPUNKDIR%" %%F in (*.log) do (
+for /R "%CYBERPUNKDIR%" %%F in (*.log *log.txt) do (
     set "filename=%%~nxF"
     setlocal enabledelayedexpansion
     set "exclude=false"
+    if "!filename:~-6!" equ "1.log" set "exclude=true"
+    if "!filename:~-6!" equ "2.log" set "exclude=true"
+    if "!filename:~-6!" equ "3.log" set "exclude=true"
+    if "!filename:~-6!" equ "4.log" set "exclude=true"
+    if "!filename:~-6!" equ "5.log" set "exclude=true"
+    if "!filename:~-6!" equ "6.log" set "exclude=true"
+    if "!filename:~-6!" equ "7.log" set "exclude=true"
+    if "!filename:~-6!" equ "8.log" set "exclude=true"
+    if "!filename:~-6!" equ "9.log" set "exclude=true"
+    if "!filename:~-6!" equ "0.log" set "exclude=true"
 
     REM Check if the file name contains two dots
     echo "!filename!" | findstr /R /C:".*\..*\.." >nul
