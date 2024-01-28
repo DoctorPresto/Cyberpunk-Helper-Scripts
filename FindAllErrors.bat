@@ -57,7 +57,7 @@ set /p userOption=Enter your choice:
 if "%userOption%"=="1" (
 	echo.
     echo Deleting all log files...
-    for /R "%~dp0" %%G in (*.log) do (
+    for /R "%~dp0" %%G in (*.log *log.txt) do (
         del /F /Q "%%G"
     )
 	echo.
@@ -182,13 +182,18 @@ echo Successfully Breached: %cyberpunkdir% >> "%output_file%"
 echo The following log files have errors: >> "%output_file%"
 echo ======================================================== >> "%output_file%"
 
-for /R "%CYBERPUNKDIR%" %%F in (*.log) do (
+for /R "%CYBERPUNKDIR%" %%F in (*.log *log.txt) do (
     set "filename=%%~nxF"
     setlocal enabledelayedexpansion
     set "exclude=false"
-
-    REM Check if the file name contains two dots
+    
+    REM Check if the file name contains two dots or matches the date pattern
     echo "!filename!" | findstr /R /C:".*\..*\.." >nul
+    if !errorlevel! equ 0 (
+        set "exclude=true"
+    ) else (
+        echo "!filename!" | findstr /r /c:".*20[0-9][0-9]-[0-1][0-9]-[0-3][0-9].*" >nul
+    )
     if !errorlevel! equ 0 (
         set "exclude=true"
     )
