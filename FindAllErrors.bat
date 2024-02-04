@@ -48,7 +48,7 @@ if not exist "%CYBERPUNKDIR%\bin\x64\Cyberpunk2077.exe" (
 echo.
 echo Please select an option:
 echo.
-echo 1. Delete all log files and launch the game (wait for your game to crash and then run option 2)
+echo 1. Delete all log files and launch the game (you should cause your issue to happen in game, then run this script again and select option 2)
 echo.
 echo 2. Check for errors
 echo.
@@ -103,7 +103,7 @@ for /f "tokens=2 delims==" %%a in ('wmic datafile where name^="!exe_path:\=\\!" 
 )      
 
 :: if not the current game version, yell at the user and deploy R.A.B.I.D.S.
-if not "!version!"=="3.0.76.4238" (
+if not "!version!"=="3.0.76.41558" (
   echo Please update the game before proceeding
   echo Deploying Roving Autonomous Bartmoss Interface Drones....
   FOR /L %%S IN (10, -1, 1) DO (
@@ -187,7 +187,7 @@ for /R "%CYBERPUNKDIR%" %%F in (*.log *log.txt) do (
     setlocal enabledelayedexpansion
     set "exclude=false"
     
-    REM Check if the file name contains two dots or matches the date pattern
+::  Check if the file name contains two dots or matches the date pattern
     echo "!filename!" | findstr /R /C:".*\..*\.." >nul
     if !errorlevel! equ 0 (
         set "exclude=true"
@@ -198,13 +198,12 @@ for /R "%CYBERPUNKDIR%" %%F in (*.log *log.txt) do (
         set "exclude=true"
     )
 
-    REM Process non-excluded log files
+::  Process non-excluded log files
     if "!exclude!"=="false" (
         :: Initialize error flag to false
         set "has_error=false"
-        
         :: Check for any errors in the file. If found, set error flag to true
-        for /F "delims=" %%L in ('findstr /I "exception error failed" "%%F" ^| findstr /V /I /C:"Failed to create record" ^| findstr /V /I /C:"reason: Record already exists" ^| findstr /V /I /C:"[Info]"') do (
+        for /F "delims=" %%L in ('findstr /I "exception error failed" "%%F" ^| findstr /V /I /C:"Failed to create record" ^| findstr /V /I /C:"[AMM Error] Non-localized string found" ^| findstr /V /I /C:"reason: Record already exists" ^| findstr /V /I /C:"[Info]"') do (
             set "has_error=true"
         )
         
@@ -216,7 +215,7 @@ for /R "%CYBERPUNKDIR%" %%F in (*.log *log.txt) do (
             echo !relative_path:~1!%%~nxF >> "%output_file%"
             echo. >> "%output_file%"
 
-            for /F "delims=" %%L in ('findstr /I "exception error failed" "%%F" ^| findstr /V /I /C:"Failed to create record" ^| findstr /V /I /C:"reason: Record already exists" ^| findstr /V /I /C:"[Info]"') do (
+            for /F "delims=" %%L in ('findstr /I "exception error failed" "%%F" ^| findstr /V /I /C:"Failed to create record" ^| findstr /V /I /C:"[AMM Error] Non-localized string found" ^| findstr /V /I /C:"reason: Record already exists" ^| findstr /V /I /C:"[Info]"') do (
                 echo     %%L >> "%output_file%"
                 echo Daemons uploaded successfully, data found
             )
