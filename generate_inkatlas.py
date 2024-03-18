@@ -1,3 +1,7 @@
+### Generates a new inkatlas.json file that you can convert within wolvenkit. All input is done through the command line, just run the script 
+
+
+
 import os
 import json
 
