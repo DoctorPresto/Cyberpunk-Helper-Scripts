@@ -1,35 +1,190 @@
-### Generates a new inkatlas.json file that you can convert within wolvenkit. All input is done through the command line, just run the script 
+#      ▓█████▄  ██▀███      ██▓███   ██▀███  ▓█████   ██████ ▄▄▄█████▓ ▒█████    ██████ 
+#      ▒██▀ ██▌▓██ ▒ ██▒   ▓██░  ██▒▓██ ▒ ██▒▓█   ▀ ▒██    ▒ ▓  ██▒ ▓▒▒██▒  ██▒▒██    ▒ 
+#      ░██   █▌▓██ ░▄█ ▒   ▓██░ ██▓▒▓██ ░▄█ ▒▒███   ░ ▓██▄   ▒ ▓██░ ▒░▒██░  ██▒░ ▓██▄   
+#      ░▓█▄   ▌▒██▀▀█▄     ▒██▄█▓▒ ▒▒██▀▀█▄  ▒▓█  ▄   ▒   ██▒░ ▓██▓ ░ ▒██   ██░  ▒   ██▒
+#      ░▒████▓ ░██▓ ▒██▒   ▒██▒ ░  ░░██▓ ▒██▒░▒████▒▒██████▒▒  ▒██▒ ░ ░ ████▓▒░▒██████▒▒
+#       ▒▒▓  ▒ ░ ▒▓ ░▒▓░   ▒▓▒░ ░  ░░ ▒▓ ░▒▓░░░ ▒░ ░▒ ▒▓▒ ▒ ░  ▒ ░░   ░ ▒░▒░▒░ ▒ ▒▓▒ ▒ ░
+#       ░ ▒  ▒   ░▒ ░ ▒░   ░▒ ░       ░▒ ░ ▒░ ░ ░  ░░ ░▒  ░ ░    ░      ░ ▒ ▒░ ░ ░▒  ░ ░
+#       ░ ░  ░   ░░   ░    ░░         ░░   ░    ░   ░  ░  ░    ░      ░ ░ ░ ▒  ░  ░  ░  
+#         ░       ░                    ░        ░  ░      ░               ░ ░        ░  
+#   ███▄ ▄███▓ ▄▄▄        ▄████  ███▄    █  ██▓  █████▒██▓ ▄████▄  ▓█████  ███▄    █ ▄▄▄█████▓
+#  ▓██▒▀█▀ ██▒▒████▄     ██▒ ▀█▒ ██ ▀█   █ ▓██▒▓██   ▒▓██▒▒██▀ ▀█  ▓█   ▀  ██ ▀█   █ ▓  ██▒ ▓▒
+#  ▓██    ▓██░▒██  ▀█▄  ▒██░▄▄▄░▓██  ▀█ ██▒▒██▒▒████ ░▒██▒▒▓█    ▄ ▒███   ▓██  ▀█ ██▒▒ ▓██░ ▒░
+#  ▒██    ▒██ ░██▄▄▄▄██ ░▓█  ██▓▓██▒  ▐▌██▒░██░░▓█▒  ░░██░▒▓▓▄ ▄██▒▒▓█  ▄ ▓██▒  ▐▌██▒░ ▓██▓ ░ 
+#  ▒██▒   ░██▒ ▓█   ▓██▒░▒▓███▀▒▒██░   ▓██░░██░░▒█░   ░██░▒ ▓███▀ ░░▒████▒▒██░   ▓██░  ▒██▒ ░ 
+#  ░ ▒░   ░  ░ ▒▒   ▓▒█░ ░▒   ▒ ░ ▒░   ▒ ▒ ░▓   ▒ ░   ░▓  ░ ░▒ ▒  ░░░ ▒░ ░░ ▒░   ▒ ▒   ▒ ░░   
+#  ░  ░      ░  ▒   ▒▒ ░  ░   ░ ░ ░░   ░ ▒░ ▒ ░ ░      ▒ ░  ░  ▒    ░ ░  ░░ ░░   ░ ▒░    ░    
+#  ░      ░     ░   ▒   ░ ░   ░    ░   ░ ░  ▒ ░ ░ ░    ▒ ░░           ░      ░   ░ ░   ░      
+#         ░         ░  ░      ░          ░  ░          ░  ░ ░         ░  ░         ░          # 
+#               ██▓ ███▄    █  ██ ▄█▀▄▄▄     ▄▄▄█████▓ ██▓    ▄▄▄        ██████           
+#              ▓██▒ ██ ▀█   █  ██▄█▒▒████▄   ▓  ██▒ ▓▒▓██▒   ▒████▄    ▒██    ▒           
+#              ▒██▒▓██  ▀█ ██▒▓███▄░▒██  ▀█▄ ▒ ▓██░ ▒░▒██░   ▒██  ▀█▄  ░ ▓██▄             
+#              ░██░▓██▒  ▐▌██▒▓██ █▄░██▄▄▄▄██░ ▓██▓ ░ ▒██░   ░██▄▄▄▄██   ▒   ██▒          
+#              ░██░▒██░   ▓██░▒██▒ █▄▓█   ▓██▒ ▒██▒ ░ ░██████▒▓█   ▓██▒▒██████▒▒          
+#              ░▓  ░ ▒░   ▒ ▒ ▒ ▒▒ ▓▒▒▒   ▓▒█░ ▒ ░░   ░ ▒░▓  ░▒▒   ▓▒█░▒ ▒▓▒ ▒ ░          
+#               ▒ ░░ ░░   ░ ▒░░ ░▒ ▒░ ▒   ▒▒ ░   ░    ░ ░ ▒  ░ ▒   ▒▒ ░░ ░▒  ░ ░          
+#               ▒ ░   ░   ░ ░ ░ ░░ ░  ░   ▒    ░        ░ ░    ░   ▒   ░  ░  ░            
+#               ░           ░ ░  ░        ░  ░            ░  ░     ░  ░      ░            
+#         ▄████ ▓█████  ███▄    █ ▓█████  ██▀███   ▄▄▄     ▄▄▄█████▓ ▒█████   ██▀███  
+#        ██▒ ▀█▒▓█   ▀  ██ ▀█   █ ▓█   ▀ ▓██ ▒ ██▒▒████▄   ▓  ██▒ ▓▒▒██▒  ██▒▓██ ▒ ██▒
+#       ▒██░▄▄▄░▒███   ▓██  ▀█ ██▒▒███   ▓██ ░▄█ ▒▒██  ▀█▄ ▒ ▓██░ ▒░▒██░  ██▒▓██ ░▄█ ▒
+#       ░▓█  ██▓▒▓█  ▄ ▓██▒  ▐▌██▒▒▓█  ▄ ▒██▀▀█▄  ░██▄▄▄▄██░ ▓██▓ ░ ▒██   ██░▒██▀▀█▄  
+#       ░▒▓███▀▒░▒████▒▒██░   ▓██░░▒████▒░██▓ ▒██▒ ▓█   ▓██▒ ▒██▒ ░ ░ ████▓▒░░██▓ ▒██▒
+#        ░▒   ▒ ░░ ▒░ ░░ ▒░   ▒ ▒ ░░ ▒░ ░░ ▒▓ ░▒▓░ ▒▒   ▓▒█░ ▒ ░░   ░ ▒░▒░▒░ ░ ▒▓ ░▒▓░
+#         ░   ░  ░ ░  ░░ ░░   ░ ▒░ ░ ░  ░  ░▒ ░ ▒░  ▒   ▒▒ ░   ░      ░ ▒ ▒░   ░▒ ░ ▒░
+#       ░ ░   ░    ░      ░   ░ ░    ░     ░░   ░   ░   ▒    ░      ░ ░ ░ ▒    ░░   ░ 
+#             ░    ░  ░         ░    ░  ░   ░           ░  ░            ░ ░     ░     
+########################################################################################################                                                                             
 
+# STOP! 
 
+# YOU DO NOT NEED TO EDIT THE SCRIPT BELOW IN ORDER TO USE IT
 
+# RUN THIS SCRIPT FROM THE COMMAND LINE
+
+# SIMPLY TYPE CMD IN THE ADDRESS BAR OF THE FOLDER THIS SCRIPT IS LOCATED IN AND THEN PASTE
+
+# python generate_inkatlas.py 
+
+# INTO THE COMMAND LINE
+
+# DO NOT COPY THE '#' 
+
+# FOR MORE HELP: https://wiki.redmodding.org/cyberpunk-2077-modding/for-mod-creators/modding-guides/everything-else/running-python-scripts
+
+########################################################################################################  
 import os
 import json
-
-def convert_to_percent(image_size, left, right, top, bottom):
-    # function to calculate the uv coords as percents of the image
-    left_percent = left / image_size[0]
-    right_percent = right / image_size[0]
-    top_percent = top / image_size[1]
-    bottom_percent = bottom / image_size[1]
-
-    return left_percent, right_percent, top_percent, bottom_percent
+try:
+    from PIL import Image
+except ImportError:
+    print('')
+    print('INKATLAS GENERATOR ERROR: ')
+    print('    PILLOW not present')
+    print('    Install PILLOW by copy pasting the following into the command line: ')
+    print('    pip install pillow')
 
 def main():
-    # Prompt the user for the required info 
-    width = int(input("Enter the icon width in pixels: "))
-    height = int(input("Enter the icon height in pixels: "))
-    columns = int(input("Enter the number of columns: "))
-    rows = int(input("Enter the number of rows in the atlas: "))
-    spacing = int(input("Enter the number of pixels between icons: "))
-    texture_path = input("Enter the relative path to the xbm file(copy from wkit): ")
-    output_folder = input("Enter the absolute path to your projects raw folder (single slashes): ")
+    # Prompt the user for the required info
+    print('')
+    print("INKATLAS GENERATOR INPUT: ")
+    while True:
+        icon_folder = input("    Enter the path to the folder containing your individual icon PNG images: ")
+        # Check for quotes which will break the input path
+        if (icon_folder.startswith('"') or icon_folder.startswith("'")) and (icon_folder.endswith('"') or icon_folder.endswith("'")):
+            # Remove the quotes
+            icon_folder = icon_folder[1:-1]
+            
+        if not os.path.exists(icon_folder):
+            print('')
+            print('INKATLAS GENERATOR ERROR:')
+            print('    The entered path does not exist.')
+            print('')
+            print("INKATLAS GENERATOR INPUT: ")
+            continue
+        files_in_folder = os.listdir(icon_folder)
 
-    total_width = width * columns + spacing * (columns - 1)
-    total_height = height * rows + spacing * (rows - 1)
+        # Check if the icon folder contains at least one .png file
+        png_files = [file for file in files_in_folder if file.endswith('.png')]
+        if not png_files:
+            print('')
+            print('INKATLAS GENERATOR ERROR:')
+            print('    The entered folder does not contain any PNG files.')
+            print('')
+            print("INKATLAS GENERATOR INPUT: ")
+            continue
 
-    image_size = (total_width, total_height)
+        break  # Exit the loop if the folder contains at least one .png file
+    
+    while True:
+        output_folder = input("    Enter the path to your Wolvenkit project raw folder: ")
+        # Check for quotes which will break the input path
+        if (output_folder.startswith('"') or output_folder.startswith("'")) and (output_folder.endswith('"') or output_folder.endswith("'")):
+            # Remove the quotes
+            output_folder = output_folder[1:-1]
+        
+        if output_folder.endswith("source"):
+            output_folder += "\\raw"
+        elif output_folder.endswith("archive"):
+            source_folder = os.path.dirname(output_folder)
+            output_folder = os.path.join(source_folder, "raw")
+            
+        if output_folder.endswith("raw"):
+            break  # Exit the loop if the output folder ends with "raw"
+        
+        else:
+            print('')
+            print('INKATLAS GENERATOR ERROR: ')
+            print('    Entered path does not seem to be within a Wolvenkit project.')
+            print('')
+            print("INKATLAS GENERATOR INPUT: ")
+        
+    atlas_name = input("    Enter the name for your new inkatlas file (without extension): ") + '_inkatlas'
 
-    # setup wkit inkatlas.json structure 
+    # Load each image to get its dimensions
+    images = []
+    for png_file in png_files:
+        image_path = os.path.join(icon_folder, png_file)
+        try:
+            img = Image.open(image_path)
+            images.append({"path": image_path, "image": img, "name": os.path.splitext(png_file)[0]})
+        except Exception as e:
+            print("INKATLAS GENERATOR ERROR: ")
+            print(f"     Error opening image {png_file}: {e}")
+
+    # Calculate the maximum width of the combined image
+    max_width = 2048
+
+    # Initialize variables
+    grid = []
+    current_row = []
+    current_width = 0
+    max_height_in_row = 0
+
+    # Iterate through each image
+    for image_data in images:
+        img = image_data["image"]
+        width = img.width
+        height = img.height
+
+        # Check if adding the current image exceeds the maximum width
+        if current_width + width <= max_width:
+            # Add the image to the current row
+            current_row.append(image_data)
+            current_width += width + 1  # Add 1 pixel spacing between images
+            max_height_in_row = max(max_height_in_row, height)
+        else:
+            # Add the current row to the grid and start a new row
+            grid.append(current_row)
+            current_row = [image_data]
+            current_width = width + 1  # Add 1 pixel spacing between images
+            max_height_in_row = height
+
+    # Add the last row to the grid
+    if current_row:
+        grid.append(current_row)
+
+    # Calculate the total height of the combined image
+    total_height = sum(max(image_data["image"].height for image_data in row) for row in grid) + len(grid) - 1  # Add spacing between rows
+
+    # Ensure total height is an even number
+    total_height += total_height % 2
+
+    total_width = 0
+    for row in grid:
+        row_width = sum(image_data["image"].width + 1 for image_data in row)  # Calculate the total width of images in the current row
+        total_width = max(total_width, row_width)  # Update the total width if the current row width is greater
+
+    # Ensure total width does not exceed the maximum width
+    total_width = min(total_width, max_width)
+
+    # Ensure total width is an even number
+    total_width += total_width % 2
+
+    # Create a blank canvas to paste images onto
+    combined_image = Image.new("RGBA", (total_width, total_height), (0, 0, 0, 0))
+
+    # JSON data
     data = {
         "Header": {
             "WolvenKitVersion": "8.13.0-nightly.2024-03-17",
@@ -69,7 +224,7 @@ def main():
                                 "DepotPath": {
                                     "$type": "ResourcePath",
                                     "$storage": "string",
-                                    "$value": texture_path
+                                    "$value": (f"{atlas_name}.xbm")
                                 },
                                 "Flags": "Default"
                             }
@@ -80,7 +235,7 @@ def main():
                     "DepotPath": {
                         "$type": "ResourcePath",
                         "$storage": "string",
-                        "$value": texture_path
+                        "$value": (f"{atlas_name}.xbm")
                     },
                     "Flags": "Default"
                 },
@@ -90,58 +245,72 @@ def main():
         }
     }
 
-    # Populate parts info
-    for row in range(rows):
-        for col in range(columns):
-            left_pixel = col * (width + spacing)
-            right_pixel = left_pixel + width
-            top_pixel = row * (height + spacing)
-            bottom_pixel = top_pixel + height
+    # Paste each image onto the canvas and add its data to the JSON
+    current_y = 0
+    for row in grid:
+        max_height_in_row = max(image_data["image"].height for image_data in row)
+        current_x = 0
+        for image_data in row:
+            img = image_data["image"]
+            name = image_data["name"]
+            width = img.width
+            height = img.height
 
-            # Convert to percents
-            left_percent, right_percent, top_percent, bottom_percent = convert_to_percent(
-                image_size, left_pixel, right_pixel, top_pixel, bottom_pixel
-            )
+            top_pixel = current_y + (max_height_in_row - height) // 2
+            left_pixel = current_x
 
-            # create parts entries for each item
+            combined_image.paste(img, (left_pixel, top_pixel))
+
+            current_x += width + 1  # Add 1 pixel spacing between images
+
+            # Add image data to JSON
             part_data = {
                 "$type": "inkTextureAtlasMapper",
                 "clippingRectInPixels": {
                     "$type": "Rect",
-                    "bottom": bottom_pixel,
+                    "bottom": top_pixel + height,
                     "left": left_pixel,
-                    "right": right_pixel,
+                    "right": left_pixel + width,
                     "top": top_pixel
                 },
                 "clippingRectInUVCoords": {
                     "$type": "RectF",
-                    "Bottom": bottom_percent,
-                    "Left": left_percent,
-                    "Right": right_percent,
-                    "Top": top_percent
+                    "Bottom": (top_pixel + height) / total_height,
+                    "Left": left_pixel / total_width,
+                    "Right": (left_pixel + width) / total_width,
+                    "Top": top_pixel / total_height
                 },
                 "partName": {
                     "$type": "CName",
                     "$storage": "string",
-                    "$value": f"{row}_{col}"
+                    "$value": name
                 }
             }
 
             # Append part data to parts array 
             data["Data"]["RootChunk"]["slots"]["Elements"][0]["parts"].append(part_data)
+            
+        current_y += max_height_in_row + 1  # Add 1 pixel spacing between rows
 
     # Create the output folder if it does not exist
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
-    # set the output file name
-    output_file = os.path.join(output_folder, "output.inkatlas.json")
+    # Set the output file name
+    output_file = os.path.join(output_folder, atlas_name + ".inkatlas.json")
 
     # Write everything to the .inkatlas.json
     with open(output_file, "w") as json_file:
         json.dump(data, json_file, indent=2)
+    print('')
+    print("INKATLAS GENERATOR INFO: ")
+    print(f"    inkatlas.json has been saved to: {output_file}")
 
-    print(f"Data has been saved to {output_file}")
+    # Save the combined atlas image
+    combined_image_path = os.path.join(output_folder, atlas_name + ".png")
+    combined_image.save(combined_image_path)
+    print(f"    Atlas image has been saved to {combined_image_path}")
 
 if __name__ == "__main__":
     main()
+
