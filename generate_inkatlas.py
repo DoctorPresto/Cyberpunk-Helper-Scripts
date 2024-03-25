@@ -74,6 +74,8 @@ def main():
         if (icon_folder.startswith('"') or icon_folder.startswith("'")) and (icon_folder.endswith('"') or icon_folder.endswith("'")):
             # Remove the quotes
             icon_folder = icon_folder[1:-1]
+        if icon_folder.endswith('\\'):
+            icon_folder = icon_folder[-1]
             
         if not os.path.exists(icon_folder):
             print('')
@@ -97,29 +99,29 @@ def main():
         break  # Exit the loop if the folder contains at least one .png file
     
     while True:
-        output_folder = input("    Enter the path to your Wolvenkit project raw folder: ")
+        output_folder = input("    Enter the path to output the raw inkatlas files for you to import in Wolvenkit: ")
+
         # Check for quotes which will break the input path
-        if (output_folder.startswith('"') or output_folder.startswith("'")) and (output_folder.endswith('"') or output_folder.endswith("'")):
+        if (output_folder.startswith('"') or output_folder.startswith("'")) and (output_folder.endswith('"') or output_folder.endswith("'") or output_folder.endswith("\\")):
             # Remove the quotes
             output_folder = output_folder[1:-1]
-        
+
         if output_folder.endswith("source"):
-            output_folder += "\\raw"
-        elif output_folder.endswith("archive"):
-            source_folder = os.path.dirname(output_folder)
-            output_folder = os.path.join(source_folder, "raw")
+            output_folder = os.path.join(output_folder, "raw")
+        elif "\\archive" in output_folder:
+            output_folder = output_folder.replace("\\archive", "\\raw")
             
-        if output_folder.endswith("raw"):
-            break  # Exit the loop if the output folder ends with "raw"
-        
+        if "raw" in output_folder:
+            break  # Exit the loop if "raw" is in the output folder path
         else:
             print('')
             print('INKATLAS GENERATOR ERROR: ')
             print('    Entered path does not seem to be within a Wolvenkit project.')
             print('')
             print("INKATLAS GENERATOR INPUT: ")
+
         
-    atlas_name = input("    Enter the name for your new inkatlas file (without extension): ") + '_inkatlas'
+    atlas_name = input("    Enter the name for your new inkatlas file (without extension): ")
 
     # Load each image to get its dimensions
     images = []
@@ -183,7 +185,12 @@ def main():
 
     # Create a blank canvas to paste images onto
     combined_image = Image.new("RGBA", (total_width, total_height), (0, 0, 0, 0))
-
+    raw_index = output_folder.find("raw\\")
+    if raw_index != -1:
+        # Add 4 to skip over "raw\" itself
+        output_folder_stripped = output_folder[raw_index + 4:]
+        atlas_xbm = os.path.join(output_folder_stripped, atlas_name + ".xbm")
+        atlas_xbm_1080 = atlas_xbm.replace(".xbm", "_1080.xbm")
     # JSON data
     data = {
         "Header": {
@@ -224,9 +231,22 @@ def main():
                                 "DepotPath": {
                                     "$type": "ResourcePath",
                                     "$storage": "string",
-                                    "$value": (f"{atlas_name}.xbm")
+                                    "$value": (f"{atlas_xbm}")
                                 },
-                                "Flags": "Default"
+                                "Flags": "Soft"
+                            }
+                        },
+                        {
+                            "$type": "inkTextureSlot",
+                            "parts": [],
+                            "slices": [],
+                            "texture": {
+                                "DepotPath": {
+                                    "$type": "ResourcePath",
+                                    "$storage": "string",
+                                    "$value": (f"{atlas_xbm_1080}")
+                                },
+                                "Flags": "Soft"
                             }
                         }
                     ]
@@ -235,7 +255,7 @@ def main():
                     "DepotPath": {
                         "$type": "ResourcePath",
                         "$storage": "string",
-                        "$value": (f"{atlas_name}.xbm")
+                        "$value": ""
                     },
                     "Flags": "Default"
                 },
@@ -289,10 +309,10 @@ def main():
 
             # Append part data to parts array 
             data["Data"]["RootChunk"]["slots"]["Elements"][0]["parts"].append(part_data)
-            
+            data["Data"]["RootChunk"]["slots"]["Elements"][1]["parts"].append(part_data)
         current_y += max_height_in_row + 1  # Add 1 pixel spacing between rows
-
-    # Create the output folder if it does not exist
+        
+    # Create the output folder if it does not exist                             
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
@@ -302,14 +322,18 @@ def main():
     # Write everything to the .inkatlas.json
     with open(output_file, "w") as json_file:
         json.dump(data, json_file, indent=2)
-    print('')
-    print("INKATLAS GENERATOR INFO: ")
-    print(f"    inkatlas.json has been saved to: {output_file}")
 
-    # Save the combined atlas image
+    print(f"Data has been saved to {output_file}")
+
+    # Save the combined image
     combined_image_path = os.path.join(output_folder, atlas_name + ".png")
     combined_image.save(combined_image_path)
-    print(f"    Atlas image has been saved to {combined_image_path}")
+    print(f"Combined image has been saved to {combined_image_path}")
+    # Save the resized image with "_1080" suffix
+    resized_image = combined_image.resize((total_width // 2, total_height // 2),resample=None, box=None, reducing_gap=None)
+    combined_image_path_1080 = combined_image_path.replace(".png", "_1080.png")
+    resized_image.save(combined_image_path_1080)    
+    print(f"Combined image has been saved to {combined_image_path_1080}")
 
 if __name__ == "__main__":
     main()
