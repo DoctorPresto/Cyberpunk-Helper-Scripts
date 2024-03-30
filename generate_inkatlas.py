@@ -54,6 +54,7 @@
 
 ########################################################################################################  
 import os
+import sys
 import json
 try:
     from PIL import Image
@@ -63,6 +64,7 @@ except ImportError:
     print('    PILLOW not present')
     print('    Install PILLOW by copy pasting the following into the command line: ')
     print('    pip install pillow')
+    print("    for more help check the link here: https://wiki.redmodding.org/cyberpunk-2077-modding/for-mod-creators/modding-guides/everything-else/running-python-scripts")
     sys.exit(1)
 
 def main():
@@ -338,3 +340,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
