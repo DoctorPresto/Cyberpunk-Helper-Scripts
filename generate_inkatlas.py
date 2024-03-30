@@ -60,11 +60,16 @@ try:
     from PIL import Image
 except ImportError:
     print('')
-    print('INKATLAS GENERATOR ERROR: ')
-    print('    PILLOW not present')
-    print('    Install PILLOW by copy pasting the following into the command line: ')
-    print('    pip install pillow')
-    print("    for more help check the link here: https://wiki.redmodding.org/cyberpunk-2077-modding/for-mod-creators/modding-guides/everything-else/running-python-scripts")
+    print('INKATLAS GENERATOR ERROR: PILLOW NOT INSTALLED ')
+    print('-----------------------------------------------------------------------------------------------')
+    print('')
+    print('you need to install PILLOW (Python Imaging Library) by copy pasting the following into the command line:')
+    print('')
+    print('pip install pillow')
+    print('')
+    print("for more help check the wiki: ")
+    print("https://wiki.redmodding.org/cyberpunk-2077-modding/for-mod-creators/modding-guides/everything-else/running-python-scripts")
+    print('-----------------------------------------------------------------------------------------------')
     sys.exit(1)
 
 def main():
@@ -83,7 +88,11 @@ def main():
         if not os.path.exists(icon_folder):
             print('')
             print('INKATLAS GENERATOR ERROR:')
+            print('-----------------------------------------------------------------------------------------------')
+            print('')
             print('    The entered path does not exist.')
+            print('')
+            print('-----------------------------------------------------------------------------------------------')
             print('')
             print("INKATLAS GENERATOR INPUT: ")
             continue
@@ -94,7 +103,11 @@ def main():
         if not png_files:
             print('')
             print('INKATLAS GENERATOR ERROR:')
+            print('-----------------------------------------------------------------------------------------------')
+            print('')
             print('    The entered folder does not contain any PNG files.')
+            print('')
+            print('-----------------------------------------------------------------------------------------------')
             print('')
             print("INKATLAS GENERATOR INPUT: ")
             continue
@@ -119,7 +132,11 @@ def main():
         else:
             print('')
             print('INKATLAS GENERATOR ERROR: ')
+            print('-----------------------------------------------------------------------------------------------')
+            print('')
             print('    Entered path does not seem to be within a Wolvenkit project.')
+            print('')
+            print('-----------------------------------------------------------------------------------------------')
             print('')
             print("INKATLAS GENERATOR INPUT: ")
 
@@ -135,7 +152,12 @@ def main():
             images.append({"path": image_path, "image": img, "name": os.path.splitext(png_file)[0]})
         except Exception as e:
             print("INKATLAS GENERATOR ERROR: ")
+            print('-----------------------------------------------------------------------------------------------')
+            print('')
             print(f"     Error opening image {png_file}: {e}")
+            print('')
+            print('-----------------------------------------------------------------------------------------------')
+            print('')
 
     # Calculate the maximum width of the combined image
     max_width = 2048
@@ -340,4 +362,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
