@@ -63,6 +63,7 @@ except ImportError:
     print('    PILLOW not present')
     print('    Install PILLOW by copy pasting the following into the command line: ')
     print('    pip install pillow')
+    sys.exit(1)
 
 def main():
     # Prompt the user for the required info
@@ -337,4 +338,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
