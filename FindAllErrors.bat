@@ -141,6 +141,28 @@ if not defined cet_found (
     )
 )
 
+set "redscript_files=engine\tools\scc.exe engine\tools\scc_lib.dll engine\config\base\scripts.ini r6\config\cybercmd\scc.toml"
+set "redscript_missing="
+
+:: Check for the existence of each Redscript mod file
+for %%R in (%redscript_files%) do (
+    if not exist "%CYBERPUNKDIR%\%%R" (
+        if defined redscript_missing (
+            set "redscript_missing=!redscript_missing!, %%R"
+        ) else (
+            set "redscript_missing=%%R"
+        )
+    )
+)
+
+:: If any Redscript mod files are missing, add Redscript to the list of missing frameworks
+if defined redscript_missing (
+    if defined dll_not_found (
+        set "dll_not_found=!dll_not_found!, Redscript"
+    ) else (
+        set "dll_not_found=Redscript"
+    )
+) 
 :: Search for red4ext framework mod DLL files and check their versions
 set "dll_files=RED4ext.dll ArchiveXL.dll TweakXL.dll Codeware.dll"
 
@@ -174,6 +196,10 @@ if defined cet_found (
     echo CET Version: !cet_version! >> "%output_file%"
 )
 
+if not defined redscript_missing (
+	echo
+    echo Redscript: installed correctly >> "%output_file%"
+)
 
 :: Parse through all files ending with .log, excluding those with .number.log pattern
 echo. >> "%output_file%" 
