@@ -256,7 +256,7 @@ def main():
                                 "DepotPath": {
                                     "$type": "ResourcePath",
                                     "$storage": "string",
-                                    "$value": (f"{atlas_xbm}")
+                                    "$value": (f"{atlas_name}.xbm")
                                 },
                                 "Flags": "Soft"
                             }
@@ -269,7 +269,7 @@ def main():
                                 "DepotPath": {
                                     "$type": "ResourcePath",
                                     "$storage": "string",
-                                    "$value": (f"{atlas_xbm_1080}")
+                                    "$value": (f"{atlas_name}_1080.xbm")
                                 },
                                 "Flags": "Soft"
                             }
