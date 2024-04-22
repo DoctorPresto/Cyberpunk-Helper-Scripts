@@ -55,6 +55,7 @@
 ########################################################################################################  
 import os
 import sys
+import re
 import json
 try:
     from PIL import Image
@@ -210,11 +211,9 @@ def main():
 
     # Create a blank canvas to paste images onto
     combined_image = Image.new("RGBA", (total_width, total_height), (0, 0, 0, 0))
-    raw_index = output_folder.find("raw\\")
-    if raw_index != -1:
-        # Add 4 to skip over "raw\" itself
-        output_folder_stripped = output_folder[raw_index + 4:]
-        atlas_xbm = os.path.join(output_folder_stripped, atlas_name + ".xbm")
+    raw_index = re.sub(r".*?" + re.escape("raw"), "", output_folder, 1)
+    if raw_index is not None:
+        atlas_xbm = os.path.join(raw_index, atlas_name + ".xbm")
         atlas_xbm_1080 = atlas_xbm.replace(".xbm", "_1080.xbm")
     # JSON data
     data = {
@@ -256,7 +255,7 @@ def main():
                                 "DepotPath": {
                                     "$type": "ResourcePath",
                                     "$storage": "string",
-                                    "$value": (f"{atlas_name}.xbm")
+                                    "$value": (f"{atlas_xbm}")
                                 },
                                 "Flags": "Soft"
                             }
@@ -269,7 +268,7 @@ def main():
                                 "DepotPath": {
                                     "$type": "ResourcePath",
                                     "$storage": "string",
-                                    "$value": (f"{atlas_name}_1080.xbm")
+                                    "$value": (f"{atlas_xbm_1080}")
                                 },
                                 "Flags": "Soft"
                             }
