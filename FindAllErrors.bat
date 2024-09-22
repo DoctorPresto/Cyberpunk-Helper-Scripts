@@ -102,14 +102,19 @@ for /f "tokens=2 delims==" %%a in ('wmic datafile where name^="!exe_path:\=\\!" 
     for /f "delims=" %%b in ("%%a") do set "version=%%b"
 )      
 
+:: update executable version here
+set LATESTVERSION=3.0.76.64623
+
 :: if not the current game version, yell at the user and deploy R.A.B.I.D.S.
-if not "!version!"=="3.0.76.64179" (
-  echo Please update the game before proceeding
+if not "!version!"=="%LATESTVERSION%" (
+  echo Please update the game before proceeding. The most recent game version is 2.13 with the executable version %LATESTVERSION%
+  echo.
   echo Deploying Roving Autonomous Bartmoss Interface Drones....
   FOR /L %%S IN (10, -1, 1) DO (
     set /p =%%S ...!carret!<nul
     ping -n 2 127.0.0.1 > nul 2>&1
   )
+  echo Done. You can leave now.
   goto :eof
 )
 
