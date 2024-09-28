@@ -103,7 +103,7 @@ for /f "tokens=2 delims==" %%a in ('wmic datafile where name^="!exe_path:\=\\!" 
 )      
 
 :: update executable version here
-set LATESTVERSION=3.0.76.64623
+set LATESTVERSION=3.0.77.64623
 
 :: if not the current game version, yell at the user and deploy R.A.B.I.D.S.
 if not "!version!"=="%LATESTVERSION%" (
