@@ -206,6 +206,37 @@ if not defined redscript_missing (
     echo Redscript: installed correctly >> "%output_file%"
 )
 
+:: Initialize frame generation mods section
+set "framegen_section="
+set "framegen_found="
+
+:: Check for dlss-enabler.dll
+if exist "%CYBERPUNKDIR%\bin\x64\dlss-enabler.dll" (
+    for /f "delims=" %%a in ('powershell -Command "$versionInfo = (Get-Item '%CYBERPUNKDIR%\bin\x64\dlss-enabler.dll').VersionInfo.ProductVersion; if ($versionInfo) { Write-Output $versionInfo }"') do (
+        set "framegen_section=FSR 3 FrameGen For Cyberpunk 2077 (DLSS Enabler 2077 Edition) (dlss-enabler.dll) Version: %%a"
+        set "framegen_found=1"
+    )
+)
+
+:: Check for dlss-enabler-bridge-2077.dll
+if exist "%CYBERPUNKDIR%\red4ext\plugins\DLSSEnablerBridge2077\dlss-enabler-bridge-2077.dll" (
+    for /f "delims=" %%a in ('powershell -Command "$versionInfo = (Get-Item '%CYBERPUNKDIR%\red4ext\plugins\DLSSEnablerBridge2077\dlss-enabler-bridge-2077.dll').VersionInfo.ProductVersion; if ($versionInfo) { Write-Output $versionInfo }"') do (
+        if defined framegen_section (
+            set "framegen_section=!framegen_section!\nFrameGen Ghosting `Fix` DLSS Enabler Bridge 2077 (dlss-enabler-bridge-2077.dll) Version: %%a"
+        ) else (
+            set "framegen_section=FrameGen Ghosting `Fix` DLSS Enabler Bridge 2077 (dlss-enabler-bridge-2077.dll) Version: %%a"
+        )
+        set "framegen_found=1"
+    )
+)
+
+:: Add Frame Generation Mods section if any mods were found
+if defined framegen_found (
+    echo. >> "%output_file%"
+    echo Detected Frame Generation Mods: >> "%output_file%"
+    powershell -Command "$text = '%framegen_section%' -replace '\\n',\"`n\"; $text" >> "%output_file%"
+)
+
 :: Parse through all files ending with .log, excluding those with .number.log pattern
 echo. >> "%output_file%" 
 echo ======================================================== >> "%output_file%"
