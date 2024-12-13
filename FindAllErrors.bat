@@ -210,10 +210,20 @@ if not defined redscript_missing (
 set "framegen_section="
 set "framegen_found="
 
+:: Check for dlssg_to_fsr3_amd_is_better.dll
+if exist "%CYBERPUNKDIR%\bin\x64\dlssg_to_fsr3_amd_is_better.dll" (
+        set "framegen_section=DLSSG-to-FSR3 DLL file is present"
+        set "framegen_found=1"
+)
+
 :: Check for dlss-enabler.dll
 if exist "%CYBERPUNKDIR%\bin\x64\dlss-enabler.dll" (
     for /f "delims=" %%a in ('powershell -Command "$versionInfo = (Get-Item '%CYBERPUNKDIR%\bin\x64\dlss-enabler.dll').VersionInfo.ProductVersion; if ($versionInfo) { Write-Output $versionInfo }"') do (
-        set "framegen_section=FSR 3 FrameGen For Cyberpunk 2077 (DLSS Enabler 2077 Edition) (dlss-enabler.dll) Version: %%a"
+        if defined framegen_section (
+            set "framegen_section=!framegen_section!\nFSR 3 FrameGen For Cyberpunk 2077 (DLSS Enabler 2077 Edition) (dlss-enabler.dll) Version: %%a"
+        ) else (
+            set "framegen_section=FrameGen Ghosting `Fix` DLSS Enabler Bridge 2077 (dlss-enabler-bridge-2077.dll) Version: %%a"
+        )
         set "framegen_found=1"
     )
 )
