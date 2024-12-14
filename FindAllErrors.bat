@@ -222,7 +222,7 @@ if exist "%CYBERPUNKDIR%\bin\x64\dlss-enabler.dll" (
         if defined framegen_section (
             set "framegen_section=!framegen_section!\nFSR 3 FrameGen For Cyberpunk 2077 (DLSS Enabler 2077 Edition) (dlss-enabler.dll) Version: %%a"
         ) else (
-            set "framegen_section=FrameGen Ghosting `Fix` DLSS Enabler Bridge 2077 (dlss-enabler-bridge-2077.dll) Version: %%a"
+            set "framegen_section=FSR 3 FrameGen For Cyberpunk 2077 (DLSS Enabler 2077 Edition) (dlss-enabler.dll) Version: %%a"
         )
         set "framegen_found=1"
     )
