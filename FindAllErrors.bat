@@ -107,7 +107,7 @@ set LATESTVERSION=3.0.78.41888
 
 :: if not the current game version, yell at the user and deploy R.A.B.I.D.S.
 if not "!version!"=="%LATESTVERSION%" (
-  echo Please update the game before proceeding. The most recent game version is 2.2(1) with the executable version %LATESTVERSION%
+  echo Please update the game before proceeding. The most recent game version is 2.2 with the executable version %LATESTVERSION%
   echo.
   echo Deploying Roving Autonomous Bartmoss Interface Drones....
   FOR /L %%S IN (10, -1, 1) DO (
