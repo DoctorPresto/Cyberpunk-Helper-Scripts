@@ -45,6 +45,16 @@ if not exist "%CYBERPUNKDIR%\bin\x64\Cyberpunk2077.exe" (
   goto :eof
 )
 
+:: ====================================================================
+
+:: visualc redistributable version
+set VC_VERSION=14.42.34433.0
+
+:: game version (of executable)
+set LATESTVERSION=3.0.78.57301
+
+:: ====================================================================
+
 echo.
 echo Please select an option:
 echo.
@@ -100,12 +110,9 @@ set "exe_path=%CYBERPUNKDIR%\bin\x64\Cyberpunk2077.exe"
 :: Get exe version using PowerShell and capture the output
 for /f "usebackq delims=" %%i in (`powershell -Command "$file = Get-Item '%exe_path%'; $version = [string]$file.VersionInfo.FileMajorPart + '.' + [string]$file.VersionInfo.FileMinorPart + '.' + [string]$file.VersionInfo.FileBuildPart + '.' + [string]$file.VersionInfo.FilePrivatePart; Write-Output $version"`) do ( set "version=%%i" )
 
-:: update executable version here
-set LATESTVERSION=3.0.78.41888
-
 :: if not the current game version, yell at the user and deploy R.A.B.I.D.S.
 if not "!version!"=="%LATESTVERSION%" (
-  echo Please update the game before proceeding. The most recent game version is 2.2 with the executable version %LATESTVERSION%
+  echo Please update the game before proceeding. The most recent game version is 2.21 with the executable version %LATESTVERSION%
   echo.
   echo Deploying Roving Autonomous Bartmoss Interface Drones....
   FOR /L %%S IN (10, -1, 1) DO (
@@ -117,7 +124,7 @@ if not "!version!"=="%LATESTVERSION%" (
 )
 
 :: Append version info to the output file
-echo Version: !version! > "%output_file%"
+echo Game version: !version! > "%output_file%"
 
 :: get CET Version from the log file 
 set "cet_log=%CYBERPUNKDIR%\bin\x64\plugins\cyber_engine_tweaks\cyber_engine_tweaks.log"
@@ -189,6 +196,17 @@ for %%D in (%dll_files%) do (
     )
 )
 
+:: check for RHT
+if exist "%CYBERPUNKDIR%\red4ext\plugins\RedHotTools\RedHotTools.dll" (
+    for /f "delims=" %%a in ('powershell -Command "$versionInfo = Get-Command '%CYBERPUNKDIR%\red4ext\plugins\RedHotTools\RedHotTools.dll' | ForEach-Object { $_.FileVersionInfo.ProductVersion }; if ($versionInfo) { Write-Output $versionInfo }"') do (
+        set "dll_version=%%a"
+        set "dll_found=1"
+    )
+    if defined dll_found (
+        echo RedHotTools Version: !dll_version! >> "%output_file%"
+    )
+)
+
 :: if any core mod dlls or CET are not found, display an alert and write to the output file
 if defined dll_not_found (
     echo The following framework mods are not detected: %dll_not_found% >> "%output_file%"
@@ -203,6 +221,19 @@ if not defined redscript_missing (
 	echo
     echo Redscript: installed correctly >> "%output_file%"
 )
+
+:: check for visualc redistributable
+reg query HKEY_CLASSES_ROOT\Installer\Dependencies\VC,redist.x64,amd64,14.42,bundle /V Version | Find "%VC_VERSION%" >nul
+if %errorlevel% equ 0 (
+  echo Visual C++ x64 Redist %VC_VERSION% installed >> "%output_file%"
+) else (
+  echo. >> "%output_file%"
+  echo Visual C++ x64 Redist %VC_VERSION% not installed >> "%output_file%"
+  echo Please download and install the 64-bit version from Microsoft: >> "%output_file%"
+  echo https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170#visual-studio-2015-2017-2019-and-2022 >> "%output_file%"
+  echo. >> "%output_file%"
+)
+
 
 :: Parse through all files ending with .log, excluding those with .number.log pattern
 echo. >> "%output_file%" 
