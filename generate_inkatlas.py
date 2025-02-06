@@ -35,6 +35,10 @@
 #       ░ ░   ░    ░      ░   ░ ░    ░     ░░   ░   ░   ▒    ░      ░ ░ ░ ▒    ░░   ░ 
 #             ░    ░  ░         ░    ░  ░   ░           ░  ░            ░ ░     ░     
 ########################################################################################################                                                                             
+# ENV_VARS to skip providing input every time:
+# INKATLAS_OUTPUT_DIR: path to the output folder
+# INKATLAS_OUTPUT_NAME: name for the inkatlas file
+# INKATLAS_SOURCE: path to the source folder
 
 # STOP! 
 
@@ -78,7 +82,7 @@ def main():
     print('')
     print("INKATLAS GENERATOR INPUT: ")
     while True:
-        icon_folder = input("    Enter the path to the folder containing your individual icon PNG images: ")
+        icon_folder = os.getenv('INKATLAS_SOURCE') or input("    Enter the path to the folder containing your individual icon PNG images: ")
         # Check for quotes which will break the input path
         if (icon_folder.startswith('"') or icon_folder.startswith("'")) and (icon_folder.endswith('"') or icon_folder.endswith("'")):
             # Remove the quotes
@@ -116,7 +120,7 @@ def main():
         break  # Exit the loop if the folder contains at least one .png file
     
     while True:
-        output_folder = input("    Enter the path to output the raw inkatlas files for you to import in Wolvenkit: ")
+        output_folder = os.getenv('INKATLAS_OUTPUT_DIR') or input("    Enter the path to output the raw inkatlas files for you to import in Wolvenkit: ")
 
         # Check for quotes which will break the input path
         if (output_folder.startswith('"') or output_folder.startswith("'")) and (output_folder.endswith('"') or output_folder.endswith("'") or output_folder.endswith("\\")):
@@ -141,8 +145,8 @@ def main():
             print('')
             print("INKATLAS GENERATOR INPUT: ")
 
-        
-    atlas_name = input("    Enter the name for your new inkatlas file (without extension): ")
+
+    atlas_name = os.getenv('INKATLAS_OUTPUT_NAME') or input("    Enter the name for your new inkatlas file (without extension): ")
 
     # Load each image to get its dimensions
     images = []
