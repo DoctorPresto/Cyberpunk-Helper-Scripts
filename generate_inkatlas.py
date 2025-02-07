@@ -179,13 +179,13 @@ def main():
         if current_width + width <= max_width:
             # Add the image to the current row
             current_row.append(image_data)
-            current_width += width + 1  # Add 1 pixel spacing between images
+            current_width += width
             max_height_in_row = max(max_height_in_row, height)
         else:
             # Add the current row to the grid and start a new row
             grid.append(current_row)
             current_row = [image_data]
-            current_width = width + 1  # Add 1 pixel spacing between images
+            current_width = width
             max_height_in_row = height
 
     # Add the last row to the grid
@@ -193,14 +193,14 @@ def main():
         grid.append(current_row)
 
     # Calculate the total height of the combined image
-    total_height = sum(max(image_data["image"].height for image_data in row) for row in grid) + len(grid) - 1  # Add spacing between rows
+    total_height = sum(max(image_data["image"].height for image_data in row) for row in grid)
 
     # Ensure total height is an even number
     total_height += total_height % 2
 
     total_width = 0
     for row in grid:
-        row_width = sum(image_data["image"].width + 1 for image_data in row)  # Calculate the total width of images in the current row
+        row_width = sum(image_data["image"].width for image_data in row)  # Calculate the total width of images in the current row
         total_width = max(total_width, row_width)  # Update the total width if the current row width is greater
 
     # Ensure total width does not exceed the maximum width
@@ -305,7 +305,7 @@ def main():
 
             combined_image.paste(img, (left_pixel, top_pixel))
 
-            current_x += width + 1  # Add 1 pixel spacing between images
+            current_x += width
 
             # Add image data to JSON
             part_data = {
@@ -334,7 +334,7 @@ def main():
             # Append part data to parts array 
             data["Data"]["RootChunk"]["slots"]["Elements"][0]["parts"].append(part_data)
             data["Data"]["RootChunk"]["slots"]["Elements"][1]["parts"].append(part_data)
-        current_y += max_height_in_row + 1  # Add 1 pixel spacing between rows
+        current_y += max_height_in_row
         
     # Create the output folder if it does not exist                             
     if not os.path.exists(output_folder):
