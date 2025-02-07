@@ -77,75 +77,12 @@ except ImportError:
     print('-----------------------------------------------------------------------------------------------')
     sys.exit(1)
 
+
+
+
 def main():
-    # Prompt the user for the required info
-    print('')
-    print("INKATLAS GENERATOR INPUT: ")
-    while True:
-        icon_folder = os.getenv('INKATLAS_SOURCE') or input("    Enter the path to the folder containing your individual icon PNG images: ")
-        # Check for quotes which will break the input path
-        if (icon_folder.startswith('"') or icon_folder.startswith("'")) and (icon_folder.endswith('"') or icon_folder.endswith("'")):
-            # Remove the quotes
-            icon_folder = icon_folder[1:-1]
-        if icon_folder.endswith('\\'):
-            icon_folder = icon_folder[-1]
-            
-        if not os.path.exists(icon_folder):
-            print('')
-            print('INKATLAS GENERATOR ERROR:')
-            print('-----------------------------------------------------------------------------------------------')
-            print('')
-            print('    The entered path does not exist.')
-            print('')
-            print('-----------------------------------------------------------------------------------------------')
-            print('')
-            print("INKATLAS GENERATOR INPUT: ")
-            continue
-        files_in_folder = os.listdir(icon_folder)
-
-        # Check if the icon folder contains at least one .png file
-        png_files = [file for file in files_in_folder if file.endswith('.png')]
-        if not png_files:
-            print('')
-            print('INKATLAS GENERATOR ERROR:')
-            print('-----------------------------------------------------------------------------------------------')
-            print('')
-            print('    The entered folder does not contain any PNG files.')
-            print('')
-            print('-----------------------------------------------------------------------------------------------')
-            print('')
-            print("INKATLAS GENERATOR INPUT: ")
-            continue
-
-        break  # Exit the loop if the folder contains at least one .png file
-    
-    while True:
-        output_folder = os.getenv('INKATLAS_OUTPUT_DIR') or input("    Enter the path to output the raw inkatlas files for you to import in Wolvenkit: ")
-
-        # Check for quotes which will break the input path
-        if (output_folder.startswith('"') or output_folder.startswith("'")) and (output_folder.endswith('"') or output_folder.endswith("'") or output_folder.endswith("\\")):
-            # Remove the quotes
-            output_folder = output_folder[1:-1]
-
-        if output_folder.endswith("source"):
-            output_folder = os.path.join(output_folder, "raw")
-        elif "\\archive" in output_folder:
-            output_folder = output_folder.replace("\\archive", "\\raw")
-            
-        if "raw" in output_folder:
-            break  # Exit the loop if "raw" is in the output folder path
-        else:
-            print('')
-            print('INKATLAS GENERATOR ERROR: ')
-            print('-----------------------------------------------------------------------------------------------')
-            print('')
-            print('    Entered path does not seem to be within a Wolvenkit project.')
-            print('')
-            print('-----------------------------------------------------------------------------------------------')
-            print('')
-            print("INKATLAS GENERATOR INPUT: ")
-
-
+    icon_folder, png_files = get_source_dir_and_pngs()
+    output_folder  = get_output_dir()
     atlas_name = os.getenv('INKATLAS_OUTPUT_NAME') or input("    Enter the name for your new inkatlas file (without extension): ")
 
     # Load each image to get its dimensions
@@ -363,5 +300,93 @@ def main():
     resized_image.save(combined_image_path_1080)    
     print(f"Combined image has been saved to {combined_image_path_1080}")
 
+
+def get_source_dir_and_pngs():
+    icon_folder = os.getenv('INKATLAS_SOURCE')
+    png_files = []
+    print('')
+    print("INKATLAS GENERATOR INPUT: ")
+    while True:
+        icon_folder = icon_folder or input("    Enter the path to the folder containing the PNG files you want to combine into an inkatlas: ")
+
+        # Check for quotes which will break the input path
+        if (icon_folder.startswith('"') or icon_folder.startswith("'")) and (
+                icon_folder.endswith('"') or icon_folder.endswith("'")):
+            # Remove the quotes
+            icon_folder = icon_folder[1:-1]
+        if icon_folder.endswith('\\'):
+            icon_folder = icon_folder[-1]
+
+        if not os.path.exists(icon_folder):
+            print('')
+            print('INKATLAS GENERATOR ERROR:')
+            print('-----------------------------------------------------------------------------------------------')
+            print('')
+            print('    The entered path does not exist.')
+            print('')
+            print('-----------------------------------------------------------------------------------------------')
+            print('')
+            print("INKATLAS GENERATOR INPUT: ")
+            icon_folder = None
+            continue
+        files_in_folder = os.listdir(icon_folder)
+
+        # Check if the icon folder contains at least one .png file
+        png_files = [file for file in files_in_folder if file.endswith('.png')]
+        if not png_files:
+            print('')
+            print('INKATLAS GENERATOR ERROR:')
+            print('-----------------------------------------------------------------------------------------------')
+            print('')
+            print('    The entered folder does not contain any PNG files.')
+            print('')
+            print('-----------------------------------------------------------------------------------------------')
+            print('')
+            print("INKATLAS GENERATOR INPUT: ")
+            icon_folder = None
+            continue
+
+        break  # Exit the loop if the folder contains at least one .png file
+    return icon_folder, png_files
+
+
+def get_output_dir():
+    output_folder = os.getenv('INKATLAS_OUTPUT_DIR')
+    while True:
+        output_folder = output_folder or input("    Enter the path to output the raw inkatlas files for you to import in Wolvenkit: ")
+        # Check for quotes which will break the input path
+        if (output_folder.startswith('"') or output_folder.startswith("'")) and (
+                output_folder.endswith('"') or output_folder.endswith("'") or output_folder.endswith("\\")):
+            # Remove the quotes
+            output_folder = output_folder[1:-1]
+
+        if output_folder.endswith("source"):
+            output_folder = os.path.join(output_folder, "raw")
+        elif "\\archive" in output_folder:
+            output_folder = output_folder.replace("\\archive", "\\raw")
+
+        if "raw" in output_folder:
+            break  # Exit the loop if "raw" is in the output folder path
+        else:
+            print('')
+            print('INKATLAS GENERATOR ERROR: ')
+            print('-----------------------------------------------------------------------------------------------')
+            print('')
+            print(f'    Entered path {output_folder} does not seem to be within a Wolvenkit project.')
+            print('')
+            print('-----------------------------------------------------------------------------------------------')
+            print('')
+            print("INKATLAS GENERATOR INPUT: ")
+            output_folder = None
+
+    return output_folder
+
+
+
+
 if __name__ == "__main__":
     main()
+
+
+
+
