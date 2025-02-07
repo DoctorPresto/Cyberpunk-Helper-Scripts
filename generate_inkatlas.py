@@ -327,7 +327,7 @@ def get_source_dir_and_pngs():
             print('-----------------------------------------------------------------------------------------------')
             print('')
             print("INKATLAS GENERATOR INPUT: ")
-            icon_folder = None
+            icon_folder = None # Reset the input in case env var leads to an invalid path
             continue
         files_in_folder = os.listdir(icon_folder)
 
@@ -343,7 +343,7 @@ def get_source_dir_and_pngs():
             print('-----------------------------------------------------------------------------------------------')
             print('')
             print("INKATLAS GENERATOR INPUT: ")
-            icon_folder = None
+            icon_folder = None # Reset the input in case env var leads to an invalid path
             continue
 
         break  # Exit the loop if the folder contains at least one .png file
@@ -377,7 +377,7 @@ def get_output_dir():
             print('-----------------------------------------------------------------------------------------------')
             print('')
             print("INKATLAS GENERATOR INPUT: ")
-            output_folder = None
+            output_folder = None # Reset the input in case env var leads to an invalid path
 
     return output_folder
 
