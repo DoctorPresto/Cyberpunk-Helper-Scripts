@@ -1,30 +1,32 @@
-                            # by The Magnificent Doctor Presto August 4 2023
-          # /$$           https://github.com/DoctorPresto/Cyberpunk-Helper-Scripts           /$$            /$$$$$$                        
-         # | $$                                                                             | $$           /$$__  $$                      
-  # /$$$$$$| $$$$$$$ /$$   /$$ /$$$$$$$        /$$$$$$ /$$   /$$ /$$$$$$  /$$$$$$  /$$$$$$ /$$$$$$        | $$  \__/$$$$$$  /$$$$$$       
- # /$$__  $| $$__  $| $$  | $$/$$_____/       /$$__  $|  $$ /$$//$$__  $$/$$__  $$/$$__  $|_  $$_/        | $$$$  /$$__  $$/$$__  $$      
-# | $$  \ $| $$  \ $| $$  | $|  $$$$$$       | $$$$$$$$\  $$$$/| $$  \ $| $$  \ $| $$  \__/ | $$          | $$_/ | $$  \ $| $$  \__/      
-# | $$  | $| $$  | $| $$  | $$\____  $$      | $$_____/ >$$  $$| $$  | $| $$  | $| $$       | $$ /$$      | $$   | $$  | $| $$            
-# | $$$$$$$| $$  | $|  $$$$$$$/$$$$$$$/      |  $$$$$$$/$$/\  $| $$$$$$$|  $$$$$$| $$       |  $$$$/      | $$   |  $$$$$$| $$            
-# | $$____/|__/  |__/\____  $|_______/        \_______|__/  \__| $$____/ \______/|__/        \___/        |__/    \______/|__/            
-# | $$               /$$  | $$         /$$$$$$$ /$$            | $$        /$$                                                            
-# | $$              |  $$$$$$/        | $$__  $| $$            | $$       | $$                                                            
-# |__/               \______/         | $$  \ $| $$ /$$$$$$ /$$$$$$$  /$$$$$$$ /$$$$$$  /$$$$$$                                           
-                                    # | $$$$$$$| $$/$$__  $| $$__  $$/$$__  $$/$$__  $$/$$__  $$                                          
-                                    # | $$__  $| $| $$$$$$$| $$  \ $| $$  | $| $$$$$$$| $$  \__/                                          
-                                    # | $$  \ $| $| $$_____| $$  | $| $$  | $| $$_____| $$                                                
-                                    # | $$$$$$$| $|  $$$$$$| $$  | $|  $$$$$$|  $$$$$$| $$                                                
-                                    # |_______/|__/\_______|__/  |__/\_______/\_______|__/                                                                                                                                                                                                
 import json
-import bpy
 import os
-import bmesh
+
+import bpy
 import mathutils
 
-###  Just enter the path tio your original .json file here and the script will export the changes you've made in blender to a copy of the original json in 
-### that will be saved into same directory as the original with a new_ prefix. All you need to do is right click on this file in wolvenkit and convert from json back to .phys 
+#                             by The Magnificent Doctor Presto August 4 2023
+#           /$$           https://github.com/DoctorPresto/Cyberpunk-Helper-Scripts           /$$            /$$$$$$
+#          | $$                                                                             | $$           /$$__  $$
+#   /$$$$$$| $$$$$$$ /$$   /$$ /$$$$$$$        /$$$$$$ /$$   /$$ /$$$$$$  /$$$$$$  /$$$$$$ /$$$$$$        | $$  \__/$$$$$$  /$$$$$$
+#  /$$__  $| $$__  $| $$  | $$/$$_____/       /$$__  $|  $$ /$$//$$__  $$/$$__  $$/$$__  $|_  $$_/        | $$$$  /$$__  $$/$$__  $$
+# | $$  \ $| $$  \ $| $$  | $|  $$$$$$       | $$$$$$$$\  $$$$/| $$  \ $| $$  \ $| $$  \__/ | $$          | $$_/ | $$  \ $| $$  \__/
+# | $$  | $| $$  | $| $$  | $$\____  $$      | $$_____/ >$$  $$| $$  | $| $$  | $| $$       | $$ /$$      | $$   | $$  | $| $$
+# | $$$$$$$| $$  | $|  $$$$$$$/$$$$$$$/      |  $$$$$$$/$$/\  $| $$$$$$$|  $$$$$$| $$       |  $$$$/      | $$   |  $$$$$$| $$
+# | $$____/|__/  |__/\____  $|_______/        \_______|__/  \__| $$____/ \______/|__/        \___/        |__/    \______/|__/
+# | $$               /$$  | $$         /$$$$$$$ /$$            | $$        /$$
+# | $$              |  $$$$$$/        | $$__  $| $$            | $$       | $$
+# |__/               \______/         | $$  \ $| $$ /$$$$$$ /$$$$$$$  /$$$$$$$ /$$$$$$  /$$$$$$
+#                                     | $$$$$$$| $$/$$__  $| $$__  $$/$$__  $$/$$__  $$/$$__  $$
+#                                     | $$__  $| $| $$$$$$$| $$  \ $| $$  | $| $$$$$$$| $$  \__/
+#                                     | $$  \ $| $| $$_____| $$  | $| $$  | $| $$_____| $$
+#                                     | $$$$$$$| $|  $$$$$$| $$  | $|  $$$$$$|  $$$$$$| $$
+#                                     |_______/|__/\_______|__/  |__/\_______/\_______|__/
 
-physJsonPath = "the\\full\\path\\to\\original\\json"  # make sure to use \\ in your path
+
+###  Just enter the path tio your original .json file here and the script will export the changes you've made in blender to a copy of the original json in
+### that will be saved into same directory as the original with a new_ prefix. All you need to do is right click on this file in wolvenkit and convert from json back to .phys
+
+physJsonPath = 'the\\full\\path\\to\\original\\json'  # make sure to use \\ in your path
 
 phys = open(physJsonPath)
 data = json.load(phys)
@@ -50,7 +52,10 @@ if collection is not None:
         i['Data']['localToBody']['orientation']['k'] = obj.rotation_quaternion.y
         i['Data']['localToBody']['orientation']['r'] = obj.rotation_quaternion.w
 
-        if colliderType == "physicsColliderConvex" or colliderType == "physicsColliderConcave":
+        if (
+            colliderType == 'physicsColliderConvex'
+            or colliderType == 'physicsColliderConcave'
+        ):
             mesh = obj.data
             if 'vertices' in i['Data']:
                 for j, vert in enumerate(mesh.vertices):
@@ -58,9 +63,11 @@ if collection is not None:
                     i['Data']['vertices'][j]['Y'] = vert.co.y
                     i['Data']['vertices'][j]['Z'] = vert.co.z
 
-        elif colliderType == "physicsColliderBox":
+        elif colliderType == 'physicsColliderBox':
             # Calculate world-space bounding box vertices
-            world_bounds = [obj.matrix_world @ mathutils.Vector(coord) for coord in obj.bound_box]
+            world_bounds = [
+                obj.matrix_world @ mathutils.Vector(coord) for coord in obj.bound_box
+            ]
 
             # Get center of the box in world space
             center = sum(world_bounds, mathutils.Vector()) / 8
@@ -74,9 +81,11 @@ if collection is not None:
             i['Data']['halfExtents']['Y'] = obj.dimensions.y / 2
             i['Data']['halfExtents']['Z'] = obj.dimensions.z / 2
 
-        elif colliderType == "physicsColliderCapsule":
-            i['Data']['radius'] = obj.dimensions.x / 2  # Divided by 2 because blender dimensions are diameter
-            i['Data']['height'] = obj.dimensions.z 
+        elif colliderType == 'physicsColliderCapsule':
+            i['Data']['radius'] = (
+                obj.dimensions.x / 2
+            )  # Divided by 2 because blender dimensions are diameter
+            i['Data']['height'] = obj.dimensions.z
 
 with open(output, 'w') as f:
     json.dump(data, f, indent=2)
