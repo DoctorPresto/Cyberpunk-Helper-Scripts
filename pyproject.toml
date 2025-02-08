@@ -1,0 +1,10 @@
+[project]
+name = "Cyberpunk-Helper-Scripts"
+version = "0.0.1"
+description = "A collection of scripts to help with Cyberpunk 2077 modding."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    'pillow',
+    'numpy',
+]
