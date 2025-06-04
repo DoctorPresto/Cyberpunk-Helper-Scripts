@@ -234,7 +234,7 @@ echo Successfully Breached: !CYBERPUNKDIR! >> "%output_file%"
 echo The following log files have errors: >> "%output_file%"
 echo ======================================================== >> "%output_file%"
 
-for /R "!CYBERPUNKDIR!" %%F in (*.log *log.txt) do (
+for /R "%CYBERPUNKDIR%" %%F in (*.log *log.txt) do (
     set "filename=%%~nxF"
     setlocal enabledelayedexpansion
     set exclude=false
@@ -263,7 +263,7 @@ REM  Process non-excluded log files
         if "!has_error!"=="true" (
             echo. >> "%output_file%"
             set "relative_path=%%~dpF"
-            set "relative_path=!relative_path:!CYBERPUNKDIR!=!"
+            set "relative_path=!relative_path:%CYBERPUNKDIR%=!"
             echo !relative_path:~1!%%~nxF >> "%output_file%"
             echo. >> "%output_file%"
 
