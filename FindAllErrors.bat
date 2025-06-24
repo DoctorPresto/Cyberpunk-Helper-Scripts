@@ -10,7 +10,7 @@ echo.
 
 REM Check if we are in the cyberpunk directory or if the cyberpunk directory was dragged onto the script. Mostly stolen from Mana
 if [%~1] == [] (
-  pushd %~dp0
+  pushd "%~dp0"
   set "CYBERPUNKDIR=!CD!"
   popd
 ) else (
@@ -18,7 +18,7 @@ if [%~1] == [] (
 )
 
 REM Check if the script folder is set to read-only
-pushd %~dp0
+pushd "%~dp0"
 if %errorlevel% neq 0 (
     echo ERROR: The script folder is set to read-only.
     echo Please ensure write permissions are available and try again.
