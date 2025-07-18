@@ -51,7 +51,7 @@ REM visualc redistributable version
 set VC_VERSION=14.42.34433.0
 
 REM game version (of executable)
-set LATESTVERSION=3.0.78.57301
+set LATESTVERSION=3.0.80.33925
 
 REM ====================================================================
 
