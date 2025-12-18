@@ -51,7 +51,7 @@ REM visualc redistributable version
 set VC_VERSION=14.42.34433.0
 
 REM game version (of executable)
-set LATESTVERSION=3.0.80.33925
+set LATESTVERSION=3.0.80.51928
 
 REM ====================================================================
 
@@ -355,3 +355,4 @@ REM Returns 0 if OK, 1 if too old or not found.
     endlocal
     goto :eof
     
+
